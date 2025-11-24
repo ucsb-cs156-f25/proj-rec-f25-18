@@ -22,7 +22,8 @@ public class ExampleApplication {
 
   @Autowired WiremockService wiremockService;
 
-  @Autowired RequestTypeService requestTypeService;
+  @Autowired(required = false)
+  RequestTypeService requestTypeService;
 
   @Bean
   public DateTimeProvider utcDateTimeProvider() {
@@ -52,7 +53,9 @@ public class ExampleApplication {
   public ApplicationRunner developmentApplicationRunner() {
     return arg -> {
       log.info("development mode");
-      requestTypeService.loadRequestTypes();
+      if (requestTypeService != null) {
+        requestTypeService.loadRequestTypes();
+      }
       log.info("developmentApplicationRunner completed");
     };
   }
