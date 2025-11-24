@@ -1,5 +1,6 @@
 package edu.ucsb.cs156.rec;
 
+import edu.ucsb.cs156.rec.services.RequestTypeService;
 import edu.ucsb.cs156.rec.services.wiremock.WiremockService;
 import java.time.ZonedDateTime;
 import java.util.Optional;
@@ -20,6 +21,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 public class ExampleApplication {
 
   @Autowired WiremockService wiremockService;
+
+  @Autowired RequestTypeService requestTypeService;
 
   @Bean
   public DateTimeProvider utcDateTimeProvider() {
@@ -49,6 +52,7 @@ public class ExampleApplication {
   public ApplicationRunner developmentApplicationRunner() {
     return arg -> {
       log.info("development mode");
+      requestTypeService.loadRequestTypes();
       log.info("developmentApplicationRunner completed");
     };
   }
