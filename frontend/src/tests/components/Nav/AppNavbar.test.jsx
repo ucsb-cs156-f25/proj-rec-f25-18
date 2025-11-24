@@ -286,6 +286,8 @@ describe("AppNavbar tests", () => {
       </QueryClientProvider>,
     );
 
-    expect(screen.queryByText("Request Recommendation")).not.toBeInTheDocument();
+    expect(
+      screen.queryByText("Request Recommendation"),
+    ).not.toBeInTheDocument();
   });
 });
