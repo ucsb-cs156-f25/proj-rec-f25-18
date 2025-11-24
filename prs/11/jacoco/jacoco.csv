@@ -7,7 +7,7 @@ proj-rec,edu.ucsb.cs156.rec.controllers,SystemInfoController,0,7,0,0,0,2,0,2,0,2
 proj-rec,edu.ucsb.cs156.rec.controllers,CSRFController,0,5,0,0,0,2,0,2,0,2
 proj-rec,edu.ucsb.cs156.rec.controllers,RequestTypeController,0,175,0,12,0,38,0,16,0,10
 proj-rec,edu.ucsb.cs156.rec.services,CurrentUserService,0,10,0,2,0,2,0,3,0,2
-proj-rec,edu.ucsb.cs156.rec.services,RequestTypeService,0,84,0,4,0,19,0,5,0,3
+proj-rec,edu.ucsb.cs156.rec.services,RequestTypeService,0,89,0,4,0,19,0,5,0,3
 proj-rec,edu.ucsb.cs156.rec.services,SystemInfoServiceImpl,0,52,0,4,0,14,0,6,0,4
 proj-rec,edu.ucsb.cs156.rec.services,SystemInfoService,0,3,0,0,0,1,0,1,0,1
 proj-rec,edu.ucsb.cs156.rec.errors,EntityNotFoundException,0,17,0,0,0,2,0,1,0,1
