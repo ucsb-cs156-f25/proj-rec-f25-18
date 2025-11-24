@@ -4,6 +4,8 @@ import edu.ucsb.cs156.rec.entities.RequestType;
 import edu.ucsb.cs156.rec.repositories.RequestTypeRepository;
 import java.util.Arrays;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,13 +26,23 @@ public class RequestTypeService {
           "PhD program",
           "Other");
 
+  /** Result class for loadRequestTypes method. */
+  @Data
+  @AllArgsConstructor
+  public static class LoadResult {
+    private int loaded;
+    private int skipped;
+  }
+
   /**
    * Load hardcoded request types into the database if they don't already exist.
    *
    * <p>This method checks for each hardcoded request type and only creates it if it's not already
    * in the database.
+   *
+   * @return LoadResult containing the number of types loaded and skipped
    */
-  public void loadRequestTypes() {
+  public LoadResult loadRequestTypes() {
     log.info("Loading hardcoded request types...");
     int loadedCount = 0;
     int skippedCount = 0;
@@ -48,5 +60,6 @@ public class RequestTypeService {
     }
 
     log.info("Request type loading completed. Loaded: {}, Skipped: {}", loadedCount, skippedCount);
+    return new LoadResult(loadedCount, skippedCount);
   }
 }

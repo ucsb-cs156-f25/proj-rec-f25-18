@@ -1,5 +1,6 @@
 package edu.ucsb.cs156.rec.services;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -27,13 +28,15 @@ public class RequestTypeServiceTest {
     when(requestTypeRepository.findByRequestType(any(String.class))).thenReturn(Optional.empty());
 
     // Act
-    requestTypeService.loadRequestTypes();
+    RequestTypeService.LoadResult result = requestTypeService.loadRequestTypes();
 
     // Assert
     // Should save 5 request types: CS Department BS/MS program, Scholarship or Fellowship,
     // MS program (other than CS Dept BS/MS), PhD program, Other
     verify(requestTypeRepository, times(5)).save(any(RequestType.class));
     verify(requestTypeRepository, times(5)).findByRequestType(any(String.class));
+    assertEquals(5, result.getLoaded());
+    assertEquals(0, result.getSkipped());
   }
 
   @Test
@@ -52,12 +55,14 @@ public class RequestTypeServiceTest {
     when(requestTypeRepository.findByRequestType("Other")).thenReturn(Optional.of(existingType));
 
     // Act
-    requestTypeService.loadRequestTypes();
+    RequestTypeService.LoadResult result = requestTypeService.loadRequestTypes();
 
     // Assert
     // Should only save 3 new types (skipping "Scholarship or Fellowship" and "Other")
     verify(requestTypeRepository, times(3)).save(any(RequestType.class));
     verify(requestTypeRepository, times(5)).findByRequestType(any(String.class));
+    assertEquals(3, result.getLoaded());
+    assertEquals(2, result.getSkipped());
   }
 
   @Test
@@ -69,11 +74,13 @@ public class RequestTypeServiceTest {
         .thenReturn(Optional.of(existingType));
 
     // Act
-    requestTypeService.loadRequestTypes();
+    RequestTypeService.LoadResult result = requestTypeService.loadRequestTypes();
 
     // Assert
     // Should not save any types since all already exist
     verify(requestTypeRepository, times(0)).save(any(RequestType.class));
     verify(requestTypeRepository, times(5)).findByRequestType(any(String.class));
+    assertEquals(0, result.getLoaded());
+    assertEquals(5, result.getSkipped());
   }
 }
