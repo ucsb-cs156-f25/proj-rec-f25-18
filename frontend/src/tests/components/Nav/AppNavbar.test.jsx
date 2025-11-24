@@ -233,4 +233,59 @@ describe("AppNavbar tests", () => {
     expect(screen.queryByText("Completed Requests")).not.toBeInTheDocument();
     expect(screen.queryByText("Statistics")).not.toBeInTheDocument();
   });
+
+  test("renders Request Recommendation link for logged in users", async () => {
+    const currentUser = currentUserFixtures.userOnly;
+    const doLogin = vi.fn();
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter>
+          <AppNavbar currentUser={currentUser} doLogin={doLogin} />
+        </MemoryRouter>
+      </QueryClientProvider>,
+    );
+
+    await screen.findByText("Request Recommendation");
+    const requestLink = screen.getByText("Request Recommendation");
+    expect(requestLink).toBeInTheDocument();
+    expect(requestLink).toHaveAttribute("href", "/requests/create");
+  });
+
+  test("Request Recommendation link appears for professor users", async () => {
+    const currentUser = currentUserFixtures.professorUser;
+    const doLogin = vi.fn();
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter>
+          <AppNavbar currentUser={currentUser} doLogin={doLogin} />
+        </MemoryRouter>
+      </QueryClientProvider>,
+    );
+
+    await screen.findByText("Request Recommendation");
+    const requestLink = screen.getByText("Request Recommendation");
+    expect(requestLink).toBeInTheDocument();
+  });
+
+  test("Request Recommendation link does not show when not logged in", async () => {
+    const currentUser = currentUserFixtures.notLoggedIn;
+    const systemInfo = systemInfoFixtures.showingBoth;
+    const doLogin = vi.fn();
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter>
+          <AppNavbar
+            currentUser={currentUser}
+            systemInfo={systemInfo}
+            doLogin={doLogin}
+          />
+        </MemoryRouter>
+      </QueryClientProvider>,
+    );
+
+    expect(screen.queryByText("Request Recommendation")).not.toBeInTheDocument();
+  });
 });
