@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RequestTypeService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">proj-rec</a> &gt; <a href="index.source.html" class="el_package">edu.ucsb.cs156.rec.services</a> &gt; <span class="el_source">RequestTypeService.java</span></div><h1>RequestTypeService.java</h1><pre class="source lang-java linenums">package edu.ucsb.cs156.rec.services;
+
+import edu.ucsb.cs156.rec.entities.RequestType;
+import edu.ucsb.cs156.rec.repositories.RequestTypeRepository;
+import java.util.Arrays;
+import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+/** Service for managing Request Types. */
+@Service
+<span class="fc" id="L15">@Slf4j</span>
+<span class="fc" id="L16">public class RequestTypeService {</span>
+
+  @Autowired private RequestTypeRepository requestTypeRepository;
+
+  /** List of hardcoded request types to be loaded at startup. */
+<span class="fc" id="L21">  private static final List&lt;String&gt; HARDCODED_REQUEST_TYPES =</span>
+<span class="fc" id="L22">      Arrays.asList(</span>
+          &quot;CS Department BS/MS program&quot;,
+          &quot;Scholarship or Fellowship&quot;,
+          &quot;MS program (other than CS Dept BS/MS)&quot;,
+          &quot;PhD program&quot;,
+          &quot;Other&quot;);
+
+  /** Result class for loadRequestTypes method. */
+  @Data
+  @AllArgsConstructor
+  public static class LoadResult {
+    private int loaded;
+    private int skipped;
+  }
+
+  /**
+   * Load hardcoded request types into the database if they don't already exist.
+   *
+   * &lt;p&gt;This method checks for each hardcoded request type and only creates it if it's not already
+   * in the database.
+   *
+   * @return LoadResult containing the number of types loaded and skipped
+   */
+  public LoadResult loadRequestTypes() {
+<span class="fc" id="L46">    log.info(&quot;Loading hardcoded request types...&quot;);</span>
+<span class="fc" id="L47">    int loadedCount = 0;</span>
+<span class="fc" id="L48">    int skippedCount = 0;</span>
+
+<span class="fc bfc" id="L50" title="All 2 branches covered.">    for (String type : HARDCODED_REQUEST_TYPES) {</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">      if (requestTypeRepository.findByRequestType(type).isEmpty()) {</span>
+<span class="fc" id="L52">        RequestType requestType = RequestType.builder().requestType(type).build();</span>
+<span class="fc" id="L53">        requestTypeRepository.save(requestType);</span>
+<span class="fc" id="L54">        log.info(&quot;Loaded request type: {}&quot;, type);</span>
+<span class="fc" id="L55">        loadedCount++;</span>
+<span class="fc" id="L56">      } else {</span>
+<span class="fc" id="L57">        log.debug(&quot;Request type already exists, skipping: {}&quot;, type);</span>
+<span class="fc" id="L58">        skippedCount++;</span>
+      }
+<span class="fc" id="L60">    }</span>
+
+<span class="fc" id="L62">    log.info(&quot;Request type loading completed. Loaded: {}, Skipped: {}&quot;, loadedCount, skippedCount);</span>
+<span class="fc" id="L63">    return new LoadResult(loadedCount, skippedCount);</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
