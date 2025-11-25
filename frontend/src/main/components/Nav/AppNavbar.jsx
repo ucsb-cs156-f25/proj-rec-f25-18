@@ -59,6 +59,9 @@ export default function AppNavbar({
                   <NavDropdown.Item href="/admin/requests">
                     Requests
                   </NavDropdown.Item>
+                  <NavDropdown.Item href="/requesttypes/all">
+                    Request Types
+                  </NavDropdown.Item>
                 </NavDropdown>
               )}
               {hasRole(currentUser, "ROLE_PROFESSOR") && (
