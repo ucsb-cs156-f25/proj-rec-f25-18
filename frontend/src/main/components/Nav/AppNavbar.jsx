@@ -49,6 +49,11 @@ export default function AppNavbar({
 
           <Navbar.Collapse className="justify-content-between">
             <Nav className="mr-auto">
+              {currentUser && currentUser.loggedIn && (
+                <Nav.Link as={Link} to="/requests/create">
+                  Request Recommendation
+                </Nav.Link>
+              )}
               {hasRole(currentUser, "ROLE_ADMIN") && (
                 <NavDropdown
                   title="Admin"
