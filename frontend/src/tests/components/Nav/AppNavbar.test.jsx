@@ -234,6 +234,8 @@ describe("AppNavbar tests", () => {
     expect(screen.queryByText("Statistics")).not.toBeInTheDocument();
   });
 
+  test("admin dropdown renders for admin user", async () => {
+    const currentUser = currentUserFixtures.adminUser;
   test("renders Request Recommendation link for logged in users", async () => {
     const currentUser = currentUserFixtures.userOnly;
     const doLogin = vi.fn();
@@ -246,6 +248,8 @@ describe("AppNavbar tests", () => {
       </QueryClientProvider>,
     );
 
+    const adminDropdown = await screen.findByTestId("appnavbar-admin-dropdown");
+    expect(adminDropdown).toBeInTheDocument();
     await screen.findByText("Request Recommendation");
     const requestLink = screen.getByText("Request Recommendation");
     expect(requestLink).toBeInTheDocument();

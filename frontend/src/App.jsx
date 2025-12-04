@@ -45,6 +45,21 @@ function App() {
               path="/admin/requests"
               element={<AdminRequestsPage />}
             />
+            <Route
+              exact
+              path="/requesttypes/all"
+              element={<RequestTypeIndexPage />}
+            />
+            <Route
+              exact
+              path="/requesttypes/post"
+              element={<RequestTypeCreatePage />}
+            />
+            <Route
+              exact
+              path="/requesttypes/edit/:id"
+              element={<RequestTypeEditPage />}
+            />
           </>
         )}
         {(hasRole(currentUser, "ROLE_PROFESSOR") ||
